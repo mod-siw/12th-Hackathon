@@ -10,15 +10,12 @@ import { ReactComponent as Plus } from "../icons/white-plus.svg";
 const MainPage = () => {
   const navigate = useNavigate();
   const [isView, setIsView] = useState(true);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    const name = localStorage.getItem("name");
-
-    if (name !== null) {
-      setIsView(false);
-    } else {
-      setIsView(true);
-    }
+    const storedData = JSON.parse(localStorage.getItem("data")) || [];
+    setData(storedData);
+    setIsView(storedData.length === 0);
   }, []);
 
   return (
@@ -35,7 +32,9 @@ const MainPage = () => {
         </Box>
       ) : (
         <Container>
-          <TravelBox />
+          {data.map((item) => (
+            <TravelBox key={item.ID} item={item} />
+          ))}
           <PlusBtn onClick={() => navigate("/create1")}>
             <Plus />
           </PlusBtn>

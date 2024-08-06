@@ -11,7 +11,6 @@ const CreatePage3 = () => {
 
   const onChange = (e) => {
     setValue(e.target.value);
-    console.log(e.target.value, isFilled);
 
     if (e.target.value !== "") {
       setIsFilled(true);

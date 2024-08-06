@@ -6,7 +6,6 @@ import { ReactComponent as Back } from "../icons/back.svg";
 
 const CreatePage4 = () => {
   const navigate = useNavigate();
-  const [ID, setID] = useState(null);
   const [isFilled, setIsFilled] = useState(false);
   const [value, setValue] = useState("");
 
@@ -17,33 +16,28 @@ const CreatePage4 = () => {
 
   const onChange = (e) => {
     setValue(e.target.value);
-    console.log(e.target.value, isFilled);
-
-    if (e.target.value !== "") {
-      setIsFilled(true);
-    } else {
-      setIsFilled(false);
-    }
+    setIsFilled(e.target.value !== "");
   };
 
   const nextFunc = (value) => {
-    if (localStorage.getItem("ID") !== null) {
-      localStorage.setItem("ID", 1);
-      setID(1);
-    } else {
-      setID(localStorage.getItem("ID"));
-    }
+    let existingData = JSON.parse(localStorage.getItem("data")) || [];
+    const newID = existingData.length + 1;
 
-    localStorage.setItem("data", {
-      ID: 1,
+    const newEntry = {
+      ID: newID,
       name: name,
       date1: date1,
       date2: date2,
       region: region,
       budget: value,
-    });
+    };
+
+    existingData.push(newEntry);
+
+    localStorage.setItem("data", JSON.stringify(existingData));
+
     setValue("");
-    navigate(`/detail/1`);
+    navigate(`/detail/${newID}`);
   };
 
   return (

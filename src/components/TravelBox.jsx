@@ -1,15 +1,14 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const TravelBox = () => {
-  const name = localStorage.getItem("name");
-  const date1 = localStorage.getItem("date1");
-  const date2 = localStorage.getItem("date2");
+const TravelBox = ({ item }) => {
+  const navigate = useNavigate();
 
   return (
-    <Wrapper>
-      <Title>{name}</Title>
+    <Wrapper onClick={() => navigate(`/detail/${item.ID}`)}>
+      <Title>{item.name}</Title>
       <Date>
-        {date1} ~ {date2}
+        {item.date1} ~ {item.date2}
       </Date>
     </Wrapper>
   );
@@ -26,6 +25,7 @@ const Wrapper = styled.div`
 
   gap: 8px;
   padding: 16px 10px;
+  cursor: pointer;
 `;
 
 const Title = styled.div`

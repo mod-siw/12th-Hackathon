@@ -1,23 +1,28 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import back from "../icons/back.svg";
 import addBtn from "../icons/add-btn.svg";
 
 const DetailPage = () => {
   const navigate = useNavigate();
+  let { id } = useParams();
+  const [value, setValue] = useState({});
 
-  const name = localStorage.getItem("name");
-  const date1 = localStorage.getItem("date1");
-  const date2 = localStorage.getItem("date2");
-  const region = localStorage.getItem("region");
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("data")) || [];
+    const dataItem = storedData.find((item) => item.ID === Number(id));
+    setValue(dataItem || {});
+  }, [id]);
+
   return (
     <Wrapper>
       <Container1>
         <img src={back} onClick={() => navigate("/main")} />
-        <div id="title">{name}</div>
+        <div id="title">{value?.name}</div>
         <div id="date">
-          {date1} ~ {date2}
+          {value?.date1} ~ {value?.date2}
         </div>
       </Container1>
       <Category>
