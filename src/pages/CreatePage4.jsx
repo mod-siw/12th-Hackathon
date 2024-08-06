@@ -1,13 +1,49 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as Back } from "../icons/back.svg";
 
 const CreatePage4 = () => {
   const navigate = useNavigate();
+  const [ID, setID] = useState(null);
+  const [isFilled, setIsFilled] = useState(false);
+  const [value, setValue] = useState("");
 
-  const nextFunc = () => {
-    navigate("/detail/2");
+  const name = localStorage.getItem("name");
+  const date1 = localStorage.getItem("date1");
+  const date2 = localStorage.getItem("date2");
+  const region = localStorage.getItem("region");
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+    console.log(e.target.value, isFilled);
+
+    if (e.target.value !== "") {
+      setIsFilled(true);
+    } else {
+      setIsFilled(false);
+    }
+  };
+
+  const nextFunc = (value) => {
+    if (localStorage.getItem("ID") !== null) {
+      localStorage.setItem("ID", 1);
+      setID(1);
+    } else {
+      setID(localStorage.getItem("ID"));
+    }
+
+    localStorage.setItem("data", {
+      ID: 1,
+      name: name,
+      date1: date1,
+      date2: date2,
+      region: region,
+      budget: value,
+    });
+    setValue("");
+    navigate(`/detail/1`);
   };
 
   return (
@@ -19,10 +55,17 @@ const CreatePage4 = () => {
         <div>
           <Title>여행의 예산을 지어주세요.</Title>
           <InputBox>
-            <Input placeholder="나홀로 떠나는 여행" />
+            <Input
+              autoFocus
+              placeholder="숫자만 입력해주세요!"
+              value={value}
+              onChange={onChange}
+            />
           </InputBox>
         </div>
-        <NextBtn onClick={nextFunc}>다음</NextBtn>
+        <NextBtn isFilled={isFilled} onClick={() => nextFunc(value)}>
+          다음
+        </NextBtn>
       </Container>
     </Wrapper>
   );
@@ -96,8 +139,8 @@ const NextBtn = styled.button`
   border: none;
   outline: none;
   border-radius: 8px;
-  background: var(--grey1, #ececec);
-
+  background: ${({ isFilled }) =>
+    isFilled ? "var(--main01, #2496FF)" : " var(--grey1, #ececec)"};
   color: var(--white, #fff);
   text-align: center;
   font-family: "Pretendard Variable";

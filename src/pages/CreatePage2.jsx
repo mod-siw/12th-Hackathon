@@ -1,12 +1,36 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as Back } from "../icons/back.svg";
+import { ReactComponent as Arrow } from "../icons/arrow.svg";
 
 const CreatePage2 = () => {
   const navigate = useNavigate();
+  const [isFilled, setIsFilled] = useState(false);
+  const [value1, setValue1] = useState("");
+  const [value2, setValue2] = useState("");
 
-  const nextFunc = () => {
+  const onChange1 = (e) => {
+    setValue1(e.target.value);
+  };
+
+  const onChange2 = (e) => {
+    setValue2(e.target.value);
+
+    if (e.target.value !== "") {
+      setIsFilled(true);
+    } else {
+      setIsFilled(false);
+    }
+  };
+
+  const nextFunc = (value1, value2) => {
+    localStorage.setItem("date1", value1);
+    localStorage.setItem("date2", value2);
+
+    setValue1("");
+    setValue2("");
     navigate("/create3");
   };
 
@@ -19,10 +43,23 @@ const CreatePage2 = () => {
         <div>
           <Title>여행의 날짜를 지어주세요.</Title>
           <InputBox>
-            <Input placeholder="나홀로 떠나는 여행" />
+            <Input
+              autoFocus
+              placeholder="2024.00.00."
+              value={value1}
+              onChange={onChange1}
+            />
+            <ArrowIcon />
+            <Input
+              placeholder="2024.00.00."
+              value={value2}
+              onChange={onChange2}
+            />
           </InputBox>
         </div>
-        <NextBtn onClick={nextFunc}>다음</NextBtn>
+        <NextBtn isFilled={isFilled} onClick={() => nextFunc(value1, value2)}>
+          다음
+        </NextBtn>
       </Container>
     </Wrapper>
   );
@@ -58,7 +95,15 @@ const Title = styled.div`
   letter-spacing: -0.3px;
 `;
 
-const InputBox = styled.div``;
+const InputBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const ArrowIcon = styled(Arrow)`
+  width: 60px;
+`;
 
 const Input = styled.input`
   width: 100%;
@@ -96,8 +141,8 @@ const NextBtn = styled.button`
   border: none;
   outline: none;
   border-radius: 8px;
-  background: var(--grey1, #ececec);
-
+  background: ${({ isFilled }) =>
+    isFilled ? "var(--main01, #2496FF)" : " var(--grey1, #ececec)"};
   color: var(--white, #fff);
   text-align: center;
   font-family: "Pretendard Variable";

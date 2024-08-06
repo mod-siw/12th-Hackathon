@@ -1,12 +1,28 @@
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as Back } from "../icons/back.svg";
 
 const CreatePage3 = () => {
   const navigate = useNavigate();
+  const [isFilled, setIsFilled] = useState(false);
+  const [value, setValue] = useState("");
 
-  const nextFunc = () => {
+  const onChange = (e) => {
+    setValue(e.target.value);
+    console.log(e.target.value, isFilled);
+
+    if (e.target.value !== "") {
+      setIsFilled(true);
+    } else {
+      setIsFilled(false);
+    }
+  };
+
+  const nextFunc = (value) => {
+    localStorage.setItem("region", value);
+    setValue("");
     navigate("/create4");
   };
 
@@ -19,10 +35,17 @@ const CreatePage3 = () => {
         <div>
           <Title>여행의 지역을 지어주세요.</Title>
           <InputBox>
-            <Input placeholder="제주" />
+            <Input
+              autoFocus
+              placeholder="제주"
+              value={value}
+              onChange={onChange}
+            />
           </InputBox>
         </div>
-        <NextBtn onClick={nextFunc}>다음</NextBtn>
+        <NextBtn isFilled={isFilled} onClick={() => nextFunc(value)}>
+          다음
+        </NextBtn>
       </Container>
     </Wrapper>
   );
@@ -96,8 +119,8 @@ const NextBtn = styled.button`
   border: none;
   outline: none;
   border-radius: 8px;
-  background: var(--grey1, #ececec);
-
+  background: ${({ isFilled }) =>
+    isFilled ? "var(--main01, #2496FF)" : " var(--grey1, #ececec)"};
   color: var(--white, #fff);
   text-align: center;
   font-family: "Pretendard Variable";
