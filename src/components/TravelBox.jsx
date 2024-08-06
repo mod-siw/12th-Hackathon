@@ -1,10 +1,16 @@
 import styled from "styled-components";
 
 const TravelBox = () => {
+  const name = localStorage.getItem("name");
+  const date1 = localStorage.getItem("date1");
+  const date2 = localStorage.getItem("date2");
+
   return (
     <Wrapper>
-      <Title>여행 제목</Title>
-      <Date>2024.00.00. ~ 2024.00.00.</Date>
+      <Title>{name}</Title>
+      <Date>
+        {date1} ~ {date2}
+      </Date>
     </Wrapper>
   );
 };

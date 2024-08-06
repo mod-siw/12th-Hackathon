@@ -11,6 +11,16 @@ const MainPage = () => {
   const navigate = useNavigate();
   const [isView, setIsView] = useState(true);
 
+  useEffect(() => {
+    const name = localStorage.getItem("name");
+
+    if (name !== null) {
+      setIsView(false);
+    } else {
+      setIsView(true);
+    }
+  }, []);
+
   return (
     <Wrapper>
       <Title>나의 지난 여행</Title>

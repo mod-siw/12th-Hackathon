@@ -1,15 +1,24 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import back from "../icons/back.svg";
 import addBtn from "../icons/add-btn.svg";
 
 const DetailPage = () => {
+  const navigate = useNavigate();
+
+  const name = localStorage.getItem("name");
+  const date1 = localStorage.getItem("date1");
+  const date2 = localStorage.getItem("date2");
+  const region = localStorage.getItem("region");
   return (
     <Wrapper>
       <Container1>
-        <img src={back} />
-        <div id="title">여행 제목</div>
-        <div id="date">2024.00.00 ~ 2024.00.00</div>
+        <img src={back} onClick={() => navigate("/main")} />
+        <div id="title">{name}</div>
+        <div id="date">
+          {date1} ~ {date2}
+        </div>
       </Container1>
       <Category>
         <div id="text1">일정</div>
